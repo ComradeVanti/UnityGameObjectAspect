@@ -22,17 +22,10 @@ namespace Dev.ComradeVanti.GameObjectAspect
         }
 
         [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
-        public interface IPrimitiveAspect : IGameObjectAspect
+        public interface ISingleAspect<out T> : IGameObjectAspect
         {
-            public int Int { get; }
+            public T Value { get; }
         }
-
-        [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
-        public interface IStructAspect : IGameObjectAspect
-        {
-            public Vector3 Vector { get; }
-        }
-
 
         [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
         // ReSharper disable once InconsistentNaming
@@ -88,14 +81,14 @@ namespace Dev.ComradeVanti.GameObjectAspect
         [Test]
         public void Primitive_Properties_Are_Not_Allowed()
         {
-            var maybeType = TryGenerate<IPrimitiveAspect>();
+            var maybeType = TryGenerate<ISingleAspect<int>>();
             Assert.Null(maybeType);
         }
 
         [Test]
         public void Struct_Properties_Are_Not_Allowed()
         {
-            var maybeType = TryGenerate<IStructAspect>();
+            var maybeType = TryGenerate<ISingleAspect<Vector3>>();
             Assert.Null(maybeType);
         }
     }
