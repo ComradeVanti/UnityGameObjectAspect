@@ -28,6 +28,12 @@ namespace Dev.ComradeVanti.GameObjectAspect
         }
 
         [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
+        public interface IEventAspect : IGameObjectAspect
+        {
+            event Action Test;
+        }
+
+        [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
         public interface ISingleAspect<out T> : IGameObjectAspect
         {
             public T Value { get; }
@@ -108,6 +114,13 @@ namespace Dev.ComradeVanti.GameObjectAspect
         public void Aspects_Must_Not_Have_Methods()
         {
             var maybeType = TryGenerate<IMethodAspect>();
+            Assert.Null(maybeType);
+        }
+
+        [Test]
+        public void Aspects_Must_Not_Have_Events()
+        {
+            var maybeType = TryGenerate<IEventAspect>();
             Assert.Null(maybeType);
         }
     }

@@ -45,6 +45,10 @@ namespace Dev.ComradeVanti.GameObjectAspect
             var allMethods = allInterfaceTypes.SelectMany(type => type.GetMethods());
             if (allMethods.Any()) return null;
 
+            // Must not have events 
+            var allEvents = allInterfaceTypes.SelectMany(type => type.GetEvents());
+            if (allEvents.Any()) return null;
+
             var typeName = TypeNameFor(interfaceType);
             var typeBuilder = moduleBuilder.DefineType(
                 typeName, ImplementationTypeAttributes,
