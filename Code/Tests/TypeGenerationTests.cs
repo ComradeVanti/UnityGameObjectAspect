@@ -91,5 +91,12 @@ namespace Dev.ComradeVanti.GameObjectAspect
             var maybeType = TryGenerate<ISingleAspect<Vector3>>();
             Assert.Null(maybeType);
         }
+
+        [Test]
+        public void Object_Properties_Are_Not_Allowed()
+        {
+            var maybeType = TryGenerate<ISingleAspect<object>>();
+            Assert.Null(maybeType);
+        }
     }
 }
