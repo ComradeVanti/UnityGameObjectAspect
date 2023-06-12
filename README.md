@@ -16,3 +16,4 @@ Aspect-oriented programming for Unity GameObjects
 - Nullable support
 - Live values
 - Setter support
+- Useful error messages
