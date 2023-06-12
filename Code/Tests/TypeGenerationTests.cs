@@ -123,5 +123,13 @@ namespace Dev.ComradeVanti.GameObjectAspect
             var maybeType = TryGenerate<IEventAspect>();
             Assert.Null(maybeType);
         }
+
+        [Test]
+        public void Generated_Types_Implement_The_Interface()
+        {
+            var type = TryGenerate<IEmptyAspect>()!;
+            var instance = Activator.CreateInstance(type)!;
+            Assert.That(instance, Is.AssignableTo<IEmptyAspect>());
+        }
     }
 }
