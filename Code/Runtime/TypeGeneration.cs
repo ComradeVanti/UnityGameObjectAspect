@@ -27,7 +27,7 @@ namespace Dev.ComradeVanti.GameObjectAspect
 
         private static bool IsPropertyTypeSupported(Type propertyType)
         {
-            return !propertyType.IsPrimitive;
+            return !propertyType.IsValueType;
         }
 
         public static Type? TryGenerateImplementationType<T>(ModuleBuilder moduleBuilder)

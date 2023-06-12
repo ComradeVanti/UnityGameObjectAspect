@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using JetBrains.Annotations;
 using NUnit.Framework;
+using UnityEngine;
 
 namespace Dev.ComradeVanti.GameObjectAspect
 {
@@ -25,6 +26,13 @@ namespace Dev.ComradeVanti.GameObjectAspect
         {
             public int Int { get; }
         }
+
+        [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
+        public interface IStructAspect : IGameObjectAspect
+        {
+            public Vector3 Vector { get; }
+        }
+
 
         [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
         // ReSharper disable once InconsistentNaming
@@ -81,6 +89,13 @@ namespace Dev.ComradeVanti.GameObjectAspect
         public void Primitive_Properties_Are_Not_Allowed()
         {
             var maybeType = TryGenerate<IPrimitiveAspect>();
+            Assert.Null(maybeType);
+        }
+
+        [Test]
+        public void Struct_Properties_Are_Not_Allowed()
+        {
+            var maybeType = TryGenerate<IStructAspect>();
             Assert.Null(maybeType);
         }
     }
