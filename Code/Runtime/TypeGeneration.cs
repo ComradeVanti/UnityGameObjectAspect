@@ -25,6 +25,11 @@ namespace Dev.ComradeVanti.GameObjectAspect
                 : interfaceName + "Implementation";
         }
 
+        private static bool IsPropertyTypeSupported(Type propertyType)
+        {
+            return !propertyType.IsPrimitive;
+        }
+
         public static Type? TryGenerateImplementationType<T>(ModuleBuilder moduleBuilder)
             where T : class, IGameObjectAspect
         {
@@ -37,8 +42,17 @@ namespace Dev.ComradeVanti.GameObjectAspect
                 typeName, ImplementationTypeAttributes,
                 typeof(object), new[] {interfaceType});
 
+            var allInterfaceTypes = interfaceType.GetInterfaces().Prepend(interfaceType);
+            var allProperties = allInterfaceTypes.SelectMany(type => type.GetProperties());
 
-            return typeBuilder.CreateType();
+            bool TryAddProperty(PropertyInfo property)
+            {
+                return IsPropertyTypeSupported(property.PropertyType);
+            }
+
+            return allProperties.All(TryAddProperty)
+                ? typeBuilder.CreateType()
+                : null;
         }
     }
 }

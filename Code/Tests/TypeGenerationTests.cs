@@ -18,7 +18,12 @@ namespace Dev.ComradeVanti.GameObjectAspect
         [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
         public interface IEmptyAspect : IGameObjectAspect
         {
+        }
+
+        [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
+        public interface IPrimitiveAspect : IGameObjectAspect
         {
+            public int Int { get; }
         }
 
         [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
@@ -70,6 +75,13 @@ namespace Dev.ComradeVanti.GameObjectAspect
 
             var type = TryGenerate<UnconventionalAspect>()!;
             Assert.AreEqual(type.Name, "UnconventionalAspectImplementation");
+        }
+
+        [Test]
+        public void Primitive_Properties_Are_Not_Allowed()
+        {
+            var maybeType = TryGenerate<IPrimitiveAspect>();
+            Assert.Null(maybeType);
         }
     }
 }
