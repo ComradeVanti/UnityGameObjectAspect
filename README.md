@@ -1,2 +1,3 @@
-# UnityGameObjectAspect
- Aspect-oriented programming for Unity GameObjects
+# Unity GameObject Aspect
+
+Aspect-oriented programming for Unity GameObjects
