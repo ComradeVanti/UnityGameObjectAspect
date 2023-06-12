@@ -22,6 +22,12 @@ namespace Dev.ComradeVanti.GameObjectAspect
         }
 
         [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
+        public interface IMethodAspect : IGameObjectAspect
+        {
+            void Test();
+        }
+
+        [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
         public interface ISingleAspect<out T> : IGameObjectAspect
         {
             public T Value { get; }
@@ -32,7 +38,6 @@ namespace Dev.ComradeVanti.GameObjectAspect
         public interface UnconventionalAspect : IGameObjectAspect
         {
         }
-
 
         private static Type? TryGenerate<T>() where T : class, IGameObjectAspect
         {
@@ -96,6 +101,13 @@ namespace Dev.ComradeVanti.GameObjectAspect
         public void Object_Properties_Are_Not_Allowed()
         {
             var maybeType = TryGenerate<ISingleAspect<object>>();
+            Assert.Null(maybeType);
+        }
+
+        [Test]
+        public void Aspects_Must_Not_Have_Methods()
+        {
+            var maybeType = TryGenerate<IMethodAspect>();
             Assert.Null(maybeType);
         }
     }

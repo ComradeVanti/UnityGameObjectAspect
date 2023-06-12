@@ -25,31 +25,37 @@ namespace Dev.ComradeVanti.GameObjectAspect
                 : interfaceName + "Implementation";
         }
 
-        private static bool IsPropertyTypeSupported(Type propertyType)
-        {
-            return !propertyType.IsValueType && propertyType != typeof(object);
-        }
+        private static bool IsPropertyTypeSupported(Type propertyType) =>
+            !propertyType.IsValueType && propertyType != typeof(object);
 
         public static Type? TryGenerateImplementationType<T>(ModuleBuilder moduleBuilder)
             where T : class, IGameObjectAspect
         {
             var interfaceType = typeof(T);
 
+            // Must be interface
             if (!interfaceType.IsInterface) return null;
+
+            var allInterfaceTypes =
+                interfaceType.GetInterfaces()
+                    .Prepend(interfaceType)
+                    .ToArray();
+
+            // Must not have methods
+            var allMethods = allInterfaceTypes.SelectMany(type => type.GetMethods());
+            if (allMethods.Any()) return null;
 
             var typeName = TypeNameFor(interfaceType);
             var typeBuilder = moduleBuilder.DefineType(
                 typeName, ImplementationTypeAttributes,
                 typeof(object), new[] {interfaceType});
 
-            var allInterfaceTypes = interfaceType.GetInterfaces().Prepend(interfaceType);
-            var allProperties = allInterfaceTypes.SelectMany(type => type.GetProperties());
-
             bool TryAddProperty(PropertyInfo property)
             {
                 return IsPropertyTypeSupported(property.PropertyType);
             }
 
+            var allProperties = allInterfaceTypes.SelectMany(type => type.GetProperties());
             return allProperties.All(TryAddProperty)
                 ? typeBuilder.CreateType()
                 : null;
