@@ -13,6 +13,12 @@ namespace Dev.ComradeVanti.GameObjectAspect
             public Rigidbody Rigidbody { get; }
         }
 
+        [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
+        public interface ITestComponentObject : IGameObjectAspect
+        {
+            public ITestComponent Component { get; }
+        }
+
 
         [Test]
         public void Each_Aspect_References_Original_GameObject()
@@ -38,6 +44,24 @@ namespace Dev.ComradeVanti.GameObjectAspect
             var aspect = TryGenerateTestAspect<IPhysicsObject>(gameObject);
             Assert.NotNull(aspect);
             Assert.AreSame(rigidBody, aspect.Rigidbody);
+        }
+
+        [Test]
+        public void Aspect_Creation_Returns_Null_If_Self_Interface_Is_Not_Found()
+        {
+            var gameObject = new GameObject("Empty"); // No rigidbody!
+            var aspect = TryGenerateTestAspect<ITestComponentObject>(gameObject);
+            Assert.Null(aspect);
+        }
+
+        [Test]
+        public void Interface_On_Self_Can_Be_Resolved()
+        {
+            var gameObject = new GameObject("Physics");
+            var component = (ITestComponent) gameObject.AddComponent<TestComponent>();
+            var aspect = TryGenerateTestAspect<ITestComponentObject>(gameObject);
+            Assert.NotNull(aspect);
+            Assert.AreSame(component, aspect.Component);
         }
     }
 }

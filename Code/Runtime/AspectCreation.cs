@@ -30,7 +30,7 @@ namespace Dev.ComradeVanti.GameObjectAspect
             {
                 if (property.PropertyType == typeof(GameObject))
                     return TryResolveGameObject(property);
-                if (typeof(Component).IsAssignableFrom(property.PropertyType))
+                if (typeof(Component).IsAssignableFrom(property.PropertyType) || property.PropertyType.IsInterface)
                     return TryResolveSingleComponent(property);
                 throw new ArgumentException("The given implementation type contains invalid properties!");
             }

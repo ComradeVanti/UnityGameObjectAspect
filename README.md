@@ -12,7 +12,6 @@ Designed with/for Unity 2021.3 and up. Should work on all build targets.
 
 ## Roadmap
 
-- Find component by interface
 - Find game-objects
 - Find other aspects
 - Support searching on parents
