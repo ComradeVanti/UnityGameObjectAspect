@@ -4,6 +4,12 @@ Aspect-oriented programming for Unity GameObjects
 
 ## Features
 
+## Installation
+
+### Compatibility
+
+Designed with/for Unity 2021.3 and up. Should work on all build targets.
+
 ## Roadmap
 
 - Find components
