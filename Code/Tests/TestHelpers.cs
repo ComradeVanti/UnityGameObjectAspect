@@ -27,5 +27,18 @@ namespace Dev.ComradeVanti.GameObjectAspect
             Assert.NotNull(type, "Implementation generation failed!");
             return type!;
         }
+
+        internal static T? TryGenerateTestAspect<T>(GameObject gameObject) where T : class, IGameObjectAspect
+        {
+            var implementationType = GenerateTestImplementation<T>();
+            return AspectCreation.TryCreateAspect<T>(gameObject, implementationType);
+        }
+
+        internal static T GenerateTestAspect<T>(GameObject gameObject) where T : class, IGameObjectAspect
+        {
+            var aspect = TryGenerateTestAspect<T>(gameObject);
+            Assert.NotNull(aspect, "Aspect generation failed!");
+            return aspect!;
+        }
     }
 }
