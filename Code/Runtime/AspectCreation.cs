@@ -18,10 +18,20 @@ namespace Dev.ComradeVanti.GameObjectAspect
                 return gameObject;
             }
 
+            Component? TryResolveSingleComponent(PropertyInfo property)
+            {
+                // TODO: Allow resolving parent or child components
+                var component = gameObject.GetComponent(property.PropertyType);
+
+                return !component ? null : component;
+            }
+
             object? TryResolvePropertyValue(PropertyInfo property)
             {
                 if (property.PropertyType == typeof(GameObject))
                     return TryResolveGameObject(property);
+                if (typeof(Component).IsAssignableFrom(property.PropertyType))
+                    return TryResolveSingleComponent(property);
                 throw new ArgumentException("The given implementation type contains invalid properties!");
             }
 
