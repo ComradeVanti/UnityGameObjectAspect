@@ -6,8 +6,10 @@ Aspect-oriented programming for Unity GameObjects
 
 This package allows the user to define types or classes of GameObjects.
 For example you can say that all GameObjects witch contains a `RigidBody` and
-a `Collider` are `PhysicsObjects`. Such a type of GameObject is called an **aspect**.
-You can then test if GameObjects have a defined aspect in order to guarantee that
+a `Collider` are `PhysicsObjects`. Such a type of GameObject is called an *
+*aspect**.
+You can then test if GameObjects have a defined aspect in order to guarantee
+that
 it has required components.
 
 ```csharp
@@ -16,18 +18,19 @@ it has required components.
 // They must implement IGameObjectAspect
 public interface IPhysicsObject : IGameObjectAspect {
 
-    // Add component requirements using properties
+    // Add component requirements using read-only properties
     
     public RigidBody RigidBody { get; }
     
     public Collider Collider { get; }
 
+    // Any other types of members, such as methods, are not allowed
 }
 
 // Attempt to get the aspect from some GameObject
 var physicsObject = someGameObject.TryAspect<IPhysicsObject>();
 
-// Will be null if it does not have the required components
+// Will be null if game-object does not have the required components
 if(phyicsObject != null) {
 
     // Do something with the components 
@@ -37,11 +40,41 @@ if(phyicsObject != null) {
 
 ```
 
+## Features
+
+Currently properties of the following types are supported in aspects
+
+- GameObject - Will always point to the host game-object
+- Single Components - Searches for the component on the host game-object
+    - This also works with interfaces such as searching for `IXRInteractable`
+
+Attempt to get an aspect from a `GameObject` using the `TryAspect`extension
+method.
+
+```csharp
+gameObject.TryAspect<IMyAspect>();
+
+// You can also use TryAspect on components and other aspects
+
+transform.TryAspect<IMyAspect>();
+someAspect.TryAspect<IMyAspect>();
+```
+
 ## Installation
 
 ### Compatibility
 
 Designed with/for Unity 2021.3 and up. Should work on all build targets.
+
+## How it works
+
+We use `System.Emit` to generate an implementation class for your
+aspect-interfaces at runtime. This has a slight performance penalty and so the
+generated types are cached.
+
+The `TryAspect` methods then attempt to populate all properties defined in the
+aspect-interface by resolving the requested components on the given
+host game-object.
 
 ## Roadmap
 
