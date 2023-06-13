@@ -1,11 +1,10 @@
 ﻿#nullable enable
 
 using System;
-using System.Reflection;
-using System.Reflection.Emit;
 using JetBrains.Annotations;
 using NUnit.Framework;
 using UnityEngine;
+using static Dev.ComradeVanti.GameObjectAspect.TestHelpers;
 
 namespace Dev.ComradeVanti.GameObjectAspect
 {
@@ -14,12 +13,9 @@ namespace Dev.ComradeVanti.GameObjectAspect
         [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
         public abstract class ClassAspect : IGameObjectAspect
         {
+            public abstract GameObject GameObject { get; }
         }
 
-        [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
-        public interface IEmptyAspect : IGameObjectAspect
-        {
-        }
 
         [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
         public interface IMethodAspect : IGameObjectAspect
@@ -45,29 +41,18 @@ namespace Dev.ComradeVanti.GameObjectAspect
         {
         }
 
-        private static Type? TryGenerate<T>() where T : class, IGameObjectAspect
-        {
-            var testAssemblyBuilder =
-                AssemblyBuilder.DefineDynamicAssembly(
-                    new AssemblyName("TestsAssembly"), AssemblyBuilderAccess.Run);
-
-            var testModuleBuilder =
-                testAssemblyBuilder.DefineDynamicModule("TestModule");
-
-            return TypeGeneration.TryGenerateImplementationType<T>(testModuleBuilder);
-        }
 
         [Test]
         public void Aspects_Must_Not_Be_Classes()
         {
-            var maybeType = TryGenerate<ClassAspect>();
+            var maybeType = TryGenerateTestImplementation<ClassAspect>();
             Assert.Null(maybeType);
         }
 
         [Test]
         public void Aspects_May_Be_Interfaces()
         {
-            var maybeType = TryGenerate<IEmptyAspect>();
+            var maybeType = TryGenerateTestImplementation<IEmptyAspect>();
             Assert.NotNull(maybeType);
         }
 
@@ -76,7 +61,7 @@ namespace Dev.ComradeVanti.GameObjectAspect
         {
             // NOTE: The pattern is the interface name without the leading I and "Implementation" appended
 
-            var type = TryGenerate<IEmptyAspect>()!;
+            var type = GenerateTestImplementation<IEmptyAspect>();
             Assert.AreEqual(type.Name, "EmptyAspectImplementation");
         }
 
@@ -85,49 +70,49 @@ namespace Dev.ComradeVanti.GameObjectAspect
         {
             // NOTE: The pattern is the interface name with "Implementation" appended
 
-            var type = TryGenerate<UnconventionalAspect>()!;
+            var type = GenerateTestImplementation<UnconventionalAspect>();
             Assert.AreEqual(type.Name, "UnconventionalAspectImplementation");
         }
 
         [Test]
         public void Primitive_Properties_Are_Not_Allowed()
         {
-            var maybeType = TryGenerate<ISingleAspect<int>>();
+            var maybeType = TryGenerateTestImplementation<ISingleAspect<int>>();
             Assert.Null(maybeType);
         }
 
         [Test]
         public void Struct_Properties_Are_Not_Allowed()
         {
-            var maybeType = TryGenerate<ISingleAspect<Vector3>>();
+            var maybeType = TryGenerateTestImplementation<ISingleAspect<Vector3>>();
             Assert.Null(maybeType);
         }
 
         [Test]
         public void Object_Properties_Are_Not_Allowed()
         {
-            var maybeType = TryGenerate<ISingleAspect<object>>();
+            var maybeType = TryGenerateTestImplementation<ISingleAspect<object>>();
             Assert.Null(maybeType);
         }
 
         [Test]
         public void Aspects_Must_Not_Have_Methods()
         {
-            var maybeType = TryGenerate<IMethodAspect>();
+            var maybeType = TryGenerateTestImplementation<IMethodAspect>();
             Assert.Null(maybeType);
         }
 
         [Test]
         public void Aspects_Must_Not_Have_Events()
         {
-            var maybeType = TryGenerate<IEventAspect>();
+            var maybeType = TryGenerateTestImplementation<IEventAspect>();
             Assert.Null(maybeType);
         }
 
         [Test]
         public void Generated_Types_Implement_The_Interface()
         {
-            var type = TryGenerate<IEmptyAspect>()!;
+            var type = GenerateTestImplementation<IEmptyAspect>();
             var instance = Activator.CreateInstance(type)!;
             Assert.That(instance, Is.AssignableTo<IEmptyAspect>());
         }
