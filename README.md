@@ -66,6 +66,8 @@ someAspect.TryAspect<IMyAspect>();
 
 ## Installation
 
+Install via OpenUpm using `openupm add dev.comradevanti.gameobject-aspect`
+
 ### Compatibility
 
 Designed with/for Unity 2021.3 and up. Should work on all build targets.
