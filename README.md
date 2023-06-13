@@ -2,6 +2,8 @@
 
 Aspect-oriented programming for Unity GameObjects
 
+[Changelog](./CHANGELOG.md)
+
 ---
 
 This package allows the user to define types or classes of GameObjects.
