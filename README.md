@@ -94,3 +94,4 @@ host game-object.
 - Live values
 - Setter support
 - Useful error messages
+- Allow to check if game-object has components without needing access to them (tag-components)
