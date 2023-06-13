@@ -2,17 +2,19 @@
 
 Aspect-oriented programming for Unity GameObjects
 
+[![openupm](https://img.shields.io/npm/v/dev.comradevanti.gameobject-aspect?label=openupm&registry_uri=https://package.openupm.com)](https://openupm.com/packages/dev.comradevanti.gameobject-aspect/)
+
 [Changelog](./CHANGELOG.md)
 
 ---
 
 This package allows the user to define types or classes of GameObjects.
 For example you can say that all GameObjects witch contains a `RigidBody` and
-a `Collider` are `PhysicsObjects`. Such a type of GameObject is called an *
-*aspect**.
+a `Collider` are `PhysicsObjects`. Such a type of GameObject is called an
+**aspect**.
+
 You can then test if GameObjects have a defined aspect in order to guarantee
-that
-it has required components.
+that it has required components.
 
 ```csharp
 
