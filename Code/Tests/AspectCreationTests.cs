@@ -63,5 +63,34 @@ namespace Dev.ComradeVanti.GameObjectAspect
             Assert.NotNull(aspect);
             Assert.AreSame(component, aspect.Component);
         }
+
+        [Test]
+        public void Aspect_Creation_From_GameObject_Works()
+        {
+            var gameObject = new GameObject("Physics");
+            var component = (ITestComponent) gameObject.AddComponent<TestComponent>();
+            var aspect = gameObject.TryAspect<ITestComponentObject>();
+            Assert.NotNull(aspect);
+        }
+
+        [Test]
+        public void Aspect_Creation_From_Component_Works()
+        {
+            var gameObject = new GameObject("Physics");
+            var component = gameObject.AddComponent<TestComponent>();
+            var aspect = component.TryAspect<ITestComponentObject>();
+            Assert.NotNull(aspect);
+        }
+
+        [Test]
+        public void Aspect_Creation_From_Aspect_Works()
+        {
+            var gameObject = new GameObject("Physics");
+            var component = (ITestComponent) gameObject.AddComponent<TestComponent>();
+            var aspect = gameObject.TryAspect<ITestComponentObject>()!;
+            var aspectAgain = aspect.TryAspect<ITestComponentObject>();
+
+            Assert.NotNull(aspectAgain);
+        }
     }
 }
