@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Upcoming
 
+## 0.2.0 - 26.06.2023
+
 ### Added
 
 - Equality between aspects

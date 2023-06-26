@@ -1,6 +1,6 @@
 {
   "name": "dev.comradevanti.gameobject-aspect",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "displayName": "GameObject Aspect",
   "description": "Aspect-oriented programming for Unity GameObject",
   "unity": "2021.3",
