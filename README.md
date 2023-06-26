@@ -64,6 +64,9 @@ transform.TryAspect<IMyAspect>();
 someAspect.TryAspect<IMyAspect>();
 ```
 
+You can compare aspects using `Equals` which will be true if the stem from the
+same game-object.
+
 ## Installation
 
 Install via OpenUpm using `openupm add dev.comradevanti.gameobject-aspect`
@@ -94,4 +97,5 @@ host game-object.
 - Live values
 - Setter support
 - Useful error messages
-- Allow to check if game-object has components without needing access to them (tag-components)
+- Allow to check if game-object has components without needing access to them (
+  tag-components)

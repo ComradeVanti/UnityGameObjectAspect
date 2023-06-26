@@ -54,7 +54,7 @@ namespace Dev.ComradeVanti.GameObjectAspect
             // Must not have methods
             var allMethods = allInterfaceTypes
                 .SelectMany(type => type.GetMethods())
-                .Where(method => !method.IsSpecialName);
+                .Where(method => !method.IsSpecialName && method.Name != "Equals");
             if (allMethods.Any()) return null;
 
             // Must not have events 

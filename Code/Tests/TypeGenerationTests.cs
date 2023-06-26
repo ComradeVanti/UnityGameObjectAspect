@@ -14,6 +14,9 @@ namespace Dev.ComradeVanti.GameObjectAspect
         public abstract class ClassAspect : IGameObjectAspect
         {
             public abstract GameObject GameObject { get; }
+
+
+            public bool Equals(IGameObjectAspect other) => throw new NotImplementedException();
         }
 
 
